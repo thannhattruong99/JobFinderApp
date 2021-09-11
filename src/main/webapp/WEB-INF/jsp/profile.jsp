@@ -129,11 +129,13 @@
                 <c:forEach var="cv" items="${user.curriculumVitaes}" varStatus="counter">
                     <tr>
                         <c:url value="/update-cv" var="updateCV"/>
-                        <form:form method="post" action="${updateCV}" modelAttribute="curriculum" onsubmit="return confirmMsg();" >
+                        <form method="post" action="${updateCV}" modelAttribute="curriculum" enctype="multipart/form-data" onsubmit="return confirmMsg();" >
                             <td>${counter.count}</td>
                             <td><input type="text" name="name" cssClass="form-control" value="${cv.name}"/></td>
                             <td><textarea name="description" cssClass="form-control" value="${cv.description}">${cv.description} </textarea></td>
-                            <td><input type="text" name="url" cssClass="form-control" value="${cv.url}"/><c:if test="${not empty cv.url}"><a href="${cv.url}" target="_blank">See detail</a></c:if></td>
+                            <td>
+                                <input  type="file" name="file" id="imgInp" title="&nbsp;"/><c:if test="${not empty cv.url}"><a href="${cv.url}" target="_blank"></br>See detail</a></c:if>
+                            </td>
                             <td>${cv.lastUpdated}</td>
                             <input type="hidden" readonly="true" name="username" value="${pageContext.request.userPrincipal.name}"/>
                             <input type="hidden" readonly="true" name="id" value="${cv.id}"/>
@@ -143,16 +145,16 @@
                                 <c:param name="username" value="${pageContext.request.userPrincipal.name}"/>
                             </c:url>
                             <td><a href="${deleteUrlRewritting}" onclick=" return confirmMsg();">Remove</a></td>
-                        </form:form>
+                        </form>
                     </tr>
                 </c:forEach>
                     <tr>
                         <c:url value="/add-cv" var="addCV"/>
-                        <form:form method="post" action="${addCV}" modelAttribute="curriculum" onsubmit="return confirmMsg();">
+                        <form:form method="post" action="${addCV}" modelAttribute="curriculum" enctype="multipart/form-data" onsubmit="return confirmMsg();">
                             <td></td>
                             <td><form:input type="text" path="name" cssClass="form-control"/></td>
                             <td><form:textarea path="description" cssClass="form-control"/></td>
-                            <td><form:input type="text" path="url" cssClass="form-control"/></td>
+                            <td><form:input type="file" path="file" id="img" cssClass="form-control"/></td>
                             <td></td>    
                             <form:input type="hidden" readonly="true" path="candidateId" value="${userId}"/>
                             <input type="hidden" readonly="true" name="username" value="${username}"/>

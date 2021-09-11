@@ -22,6 +22,7 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -49,7 +50,7 @@ public class CurriculumVitae implements Serializable {
     @JoinColumn(name = "candidate_id")
     private User user;
     @Transient
-    private String file;
+    private MultipartFile file;
     @OneToMany
     @JoinColumn(name = "recruimentNews")
     private Set<RecruimentNews> recruitmentNewsSet;
@@ -62,11 +63,11 @@ public class CurriculumVitae implements Serializable {
         this.recruitmentNewsSet = recruitmentNewsSet;
     }
 
-    public String getFile() {
+    public MultipartFile getFile() {
         return file;
     }
 
-    public void setFile(String file) {
+    public void setFile(MultipartFile file) {
         this.file = file;
     }
 

@@ -24,12 +24,21 @@ public class CurriculumVitaeServiceImpl {
     private CurriculumVitaeRepositoryImpl curriculumVitaeRepository;
     @Autowired
     private UserRepositoryImpl userRepository;
+    @Autowired
+    private S3ServiceImpl s3ServiceImpl;
 
     public boolean add(CurriculumVitae cv) {
+        if(cv.getFile() != null){
+            cv.setUrl(s3ServiceImpl.uploadFile(cv.getFile()));
+        }
         return curriculumVitaeRepository.add(cv);
     }
 
     public boolean update(CurriculumVitae cv) {
+        if(cv.getFile() != null){
+            cv.setUrl(s3ServiceImpl.uploadFile(cv.getFile()));
+        }
+        
         return curriculumVitaeRepository.update(cv);
     }
 

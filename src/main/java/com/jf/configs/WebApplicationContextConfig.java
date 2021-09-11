@@ -96,7 +96,8 @@ public class WebApplicationContextConfig implements WebMvcConfigurer{
     @Bean
     public MessageSource messageSource(){
         ResourceBundleMessageSource source = new ResourceBundleMessageSource();
-        source.setBasename("messages");
+        source.setBasenames("messages", "application");
+        
         return source;
     }
     
