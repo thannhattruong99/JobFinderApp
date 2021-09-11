@@ -29,9 +29,9 @@ and open the template in the editor.
         <put-attribute name="content" value="/WEB-INF/jsp/register.jsp" />
         <put-attribute name="footer" value="/WEB-INF/layout/footer.jsp" />
     </definition>
-    <definition name="add-organization" extends="baseLayout">
-        <put-attribute name="title" value="Candidate Profile" />
-        <put-attribute name="content" value="/WEB-INF/jsp/add-organization.jsp" />
+    <definition name="user" extends="baseLayout">
+        <put-attribute name="title" value="User" />
+        <put-attribute name="content" value="/WEB-INF/jsp/user.jsp" />
         <put-attribute name="footer" value="/WEB-INF/layout/footer.jsp" />
     </definition>
     <definition name="profile" extends="baseLayout">
@@ -43,6 +43,24 @@ and open the template in the editor.
         <put-attribute name="title" value="List of user" />
         <put-attribute name="header" value="/WEB-INF/layout/header.jsp" />
         <put-attribute name="content" value="/WEB-INF/jsp/users.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/layout/footer.jsp" />
+    </definition>
+     <definition name="cvs" extends="baseLayout">
+        <put-attribute name="title" value="List of user" />
+        <put-attribute name="header" value="/WEB-INF/layout/header.jsp" />
+        <put-attribute name="content" value="/WEB-INF/jsp/cvs.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/layout/footer.jsp" />
+    </definition>
+    <definition name="recruitment-news" extends="baseLayout">
+        <put-attribute name="title" value="Recruitment News" />
+        <put-attribute name="header" value="/WEB-INF/layout/header.jsp" />
+        <put-attribute name="content" value="/WEB-INF/jsp/recruitment-news.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/layout/footer.jsp" />
+    </definition>
+    <definition name="create-recruitment-news" extends="baseLayout">
+        <put-attribute name="title" value="Create recuitment news" />
+        <put-attribute name="header" value="/WEB-INF/layout/header.jsp" />
+        <put-attribute name="content" value="/WEB-INF/jsp/create-recruitment-news.jsp" />
         <put-attribute name="footer" value="/WEB-INF/layout/footer.jsp" />
     </definition>
 </tiles-definitions>

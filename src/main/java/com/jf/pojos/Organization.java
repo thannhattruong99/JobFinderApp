@@ -12,10 +12,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -25,10 +28,11 @@ import org.hibernate.annotations.UpdateTimestamp;
  */
 @Entity
 @Table(name = "Organization")
-public class Organization implements Serializable{
+public class Organization implements Serializable {
+
     @Id
-    @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid")
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String id;
     private String name;
     private String description;
@@ -36,11 +40,22 @@ public class Organization implements Serializable{
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "last_updated")
     private Date lastUpdated;
-    @Column(name = "district_id")
+    @ManyToOne
+    @JoinColumn(name = "district_id")
+    private District district;
+    @Transient
     private int districtId;
     private String address;
-    @OneToMany(mappedBy = "organization")    
+    @OneToMany(mappedBy = "organization")
     private Set<User> users;
+
+    public District getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(District district) {
+        this.district = district;
+    }
 
     public Set<User> getUsers() {
         return users;
@@ -50,7 +65,6 @@ public class Organization implements Serializable{
         this.users = users;
     }
 
-    
     public String getId() {
         return id;
     }
@@ -98,6 +112,5 @@ public class Organization implements Serializable{
     public void setAddress(String address) {
         this.address = address;
     }
-    
-    
+
 }

@@ -20,6 +20,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -85,6 +86,16 @@ public class User implements Serializable {
     private MultipartFile file;
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<CurriculumVitae> curriculumVitaes;
+    @OneToMany(mappedBy = "user")
+    private Set<RecruimentNews> recruimentNewsSet;
+
+    public Set<RecruimentNews> getRecruimentNewsSet() {
+        return recruimentNewsSet;
+    }
+
+    public void setRecruimentNewsSet(Set<RecruimentNews> recruimentNewsSet) {
+        this.recruimentNewsSet = recruimentNewsSet;
+    }
 
     public Set<CurriculumVitae> getCurriculumVitaes() {
         return curriculumVitaes;

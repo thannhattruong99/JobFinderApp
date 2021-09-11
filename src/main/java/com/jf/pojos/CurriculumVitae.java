@@ -7,12 +7,14 @@ package com.jf.pojos;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -48,6 +50,17 @@ public class CurriculumVitae implements Serializable {
     private User user;
     @Transient
     private String file;
+    @OneToMany
+    @JoinColumn(name = "recruimentNews")
+    private Set<RecruimentNews> recruitmentNewsSet;
+
+    public Set<RecruimentNews> getRecruitmentNewsSet() {
+        return recruitmentNewsSet;
+    }
+
+    public void setRecruitmentNewsSet(Set<RecruimentNews> recruitmentNewsSet) {
+        this.recruitmentNewsSet = recruitmentNewsSet;
+    }
 
     public String getFile() {
         return file;

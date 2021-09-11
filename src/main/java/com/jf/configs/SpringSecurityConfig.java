@@ -15,6 +15,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -23,7 +25,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  *
  * @author truongtn
  */
-
 @Configuration
 @EnableWebSecurity
 @EnableTransactionManagement
@@ -31,6 +32,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
     "com.jf.repository",
     "com.jf.service"})
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
+
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -47,18 +49,17 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        String username = userDetailsService.loadUserByUsername("").getUsername();
         http.formLogin().loginPage("/login").usernameParameter("username")
                 .passwordParameter("password");
         http.formLogin().defaultSuccessUrl("/").failureUrl("/login?error");
-        
+
         http.logout().logoutSuccessUrl("/login");
-        
-        
+
         http.exceptionHandling().accessDeniedPage("/login?accesDenied");
-        
+
 //        http.authorizeRequests().antMatchers("/").permitAll()
 //                .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')");
-        
         http.csrf().disable();
     }
 

@@ -10,6 +10,7 @@ package com.jf.util;
  * @author truongtn
  */
 public class MyUtil {
+    private static final String DUPLICATE_ERROR_KEY = "Duplicate entry";
     public static String generateUserNameFromFullName(String fullName){
         String[] parts = fullName.trim().split(" ");
         String username = "";
@@ -22,5 +23,16 @@ public class MyUtil {
             }
         }
         return username.toLowerCase().trim();
+    }
+    
+    public static String catchSQLException(String errorMsg){
+        System.out.println("ERROR CATCH: " + errorMsg);
+        String[] parts = errorMsg.trim().split("'");
+        if(parts[0].contains(DUPLICATE_ERROR_KEY)){
+            String[] subParts = parts[3].split("_");
+            //subParts[1] is error field name
+            return subParts[1] + "is duplicated!";
+        }
+        return "Occured error. Please try again!!";
     }
 }

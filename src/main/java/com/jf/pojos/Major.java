@@ -12,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -22,7 +21,8 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "Major")
-public class Major implements Serializable{
+public class Major implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -30,6 +30,17 @@ public class Major implements Serializable{
     private String description;
     @OneToMany(mappedBy = "major")
     private Set<User> users;
+    @OneToMany
+    @JoinColumn(name = "major")
+    private Set<RecruimentNews> recruitmentNewsSet;
+
+    public Set<RecruimentNews> getRecruitmentNewsSet() {
+        return recruitmentNewsSet;
+    }
+
+    public void setRecruitmentNewsSet(Set<RecruimentNews> recruitmentNewsSet) {
+        this.recruitmentNewsSet = recruitmentNewsSet;
+    }
 
     public Set<User> getUsers() {
         return users;
@@ -62,6 +73,5 @@ public class Major implements Serializable{
     public void setDescription(String description) {
         this.description = description;
     }
-    
-    
+
 }

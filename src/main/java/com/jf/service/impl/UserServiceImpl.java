@@ -10,17 +10,24 @@ import com.cloudinary.utils.ObjectUtils;
 import com.jf.pojos.City;
 import com.jf.pojos.Major;
 import com.jf.pojos.Organization;
+import com.jf.pojos.RecruimentNews;
 import com.jf.pojos.User;
 import com.jf.repository.impl.DistrictRepositoryImpl;
 import com.jf.repository.impl.MajorRepositoryImpl;
 import com.jf.repository.impl.OrganizationRepositoryImpl;
 import com.jf.repository.impl.UserRepositoryImpl;
+import com.jf.request.GetUsersRequest;
+import com.jf.util.MyUtil;
 import java.io.IOException;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,6 +42,7 @@ import org.springframework.stereotype.Service;
  */
 @Service("userDetailsService")
 public class UserServiceImpl implements UserDetailsService {
+
     @Autowired
     private OrganizationRepositoryImpl organizationRepository;
     @Autowired
@@ -62,48 +70,60 @@ public class UserServiceImpl implements UserDetailsService {
                 user.getPassword(), auth);
     }
 
-    public boolean add(User user) {
+    public String add(User user) {
+        String errMsg = "";
         try {
             if (!user.getFile().isEmpty()) {
                 Map r = this.cloudinary.uploader().upload(user.getFile().getBytes(),
                         ObjectUtils.asMap("resource_type", "auto"));
                 user.setAvatar((String) r.get("secure_url"));
             }
-            
+
             String password = user.getPassword();
             user.setPassword(passwordEncoder.encode(password));
-            return userRepository.add(user);
+            if (userRepository.add(user)) {
+                return errMsg;
+            }
         } catch (IOException e) {
             System.out.println("Error at UserService: " + e.getMessage());
+            errMsg = "Upload avartar fail. Please try agian!";
+        } catch (Exception ex) {
+            System.out.println("Error at UserService: " + ex.getMessage());
+            errMsg = "Create failed. Please try again!";
         }
-        return false;
+        return errMsg;
     }
-    
-    public int count(String fullname, String statusMode){
+
+    public int count(String fullname, String statusMode) {
         return userRepository.count(fullname, statusMode);
     }
-    
-    public List<User> getUsers(String fullname, String statusMode, int pageNum){
-        return userRepository.getUsers(fullname, statusMode, pageNum);
+
+    public List<User> getUsers(GetUsersRequest request) {
+        return userRepository.getUsers(request);
     }
-    
-    public boolean changeStatus(String id, boolean active){
+
+    public boolean changeStatus(String id, boolean active) {
         return userRepository.changeStatus(id, active);
     }
-    
-    public List<City> getCities(){
+
+    public List<City> getCities() {
         return districtRepository.getCities();
     }
-    
-    public List<Major> getMajors(){
+
+    public List<Major> getMajors() {
         return majorRepository.getMajors();
     }
-    
-    public  List<Organization> getOrganizations(){
+
+    public List<Organization> getOrganizations() {
         return organizationRepository.getOrganizations();
     }
-    
-    public User getUserDetailByUsername(String username){
+
+    public User getUserDetailByUsername(String username) {
         return userRepository.getUserDetailByUsername(username);
+    }
+
+    public List<RecruimentNews> getRecruimentNewsLst(String username) {
+        return new ArrayList<RecruimentNews>(this.userRepository.getRecruimentNewsSetByUser(username)
+                .getRecruimentNewsSet());
     }
 }
