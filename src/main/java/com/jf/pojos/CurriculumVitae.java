@@ -51,7 +51,7 @@ public class CurriculumVitae implements Serializable {
     private User user;
     @Transient
     private MultipartFile file;
-    @OneToMany(mappedBy = "recruitmentNews")
+    @OneToMany(mappedBy = "curriculumVitae")
     private Set<RNewsCV> rNewsCVs;
 
     public Set<RNewsCV> getrNewsCVs() {

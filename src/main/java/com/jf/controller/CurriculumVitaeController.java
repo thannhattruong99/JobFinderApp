@@ -112,7 +112,7 @@ public class CurriculumVitaeController {
         return "profile";
     }
     
-    @GetMapping("/cvs")
+    @PostMapping("/cvs")
     public String getCVList(Model model, 
             @RequestParam(name = "username") String username,
             @RequestParam(name = "rnId") String rnId){
@@ -123,7 +123,7 @@ public class CurriculumVitaeController {
         return "cvs";
     }
     
-    @GetMapping("/send-cv")
+    @PostMapping("/send-cv")
     public String sendCV(Model model, @RequestParam(name = "cvId") String cvId,
             @RequestParam(name = "rnId") String rnId){
         

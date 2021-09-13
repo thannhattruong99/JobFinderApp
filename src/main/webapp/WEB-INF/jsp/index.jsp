@@ -91,8 +91,8 @@
                 <sec:authorize access="hasRole('ROLE_CANDIDATE')">
                     <div class="form-group text-center" style="margin-top: 2%">
                         <c:url var="apply" value="/cvs"/>
-                        <form action="${apply}" method="get">
-                            <input type="hidden" readonly="true" name="rnId" value="${rnId}"/>
+                        <form action="${apply}" method="post">
+                            <input type="hidden" readonly="true" name="rnId" value="${rn.id}"/>
                             <input type="hidden" name="username" readonly="true" value="${pageContext.request.userPrincipal.name}"/>
                             <input class="btn btn-primary" type="submit" value="Apply Now"/>
                         </form>

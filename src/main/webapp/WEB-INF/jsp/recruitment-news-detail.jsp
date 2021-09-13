@@ -12,7 +12,7 @@
 
 <script src="<c:url value="/js/index.js"/>"></script>
 
-<h1 class="text text-center">Your Recruitment News</h1>
+<h1 class="text text-center">Recruitment News Detail</h1>
 
 <c:if test="${errMsg != null}">
     <div class="alert alert-danger">
@@ -35,10 +35,6 @@
 
 
 <!--table view-->
-<c:url var="create" value="/create-recruitment"/>
-<form action="${create}" method="get">
-    <input type="submit" value="Create recruitment news" />
-</form>
 <div class="row">
     <div class="card col-md-4">
         <div class="card-body">
@@ -53,9 +49,38 @@
             <h3>${rn.title}</h3>
             <b>Salary:</b> <p> ${rn.minSalary}$ up to max ${rn.maxSalary}$</p>
             <b>Job type: </b> <p>${rn.jobType}</p>
+            <b>Major:</b><p>${rn.major.name}</p>
             <b>Address:</b> <p>${rn.address} ${rn.district.name}</p>
             <b>Description:</b> <p>${rn.description}</p>
             <b>Poster:</b> <p>${rn.user.fullname}</p>
         </div>
+    </div>
+    <div class="card col-md-8">
+        <h2 class="text-center">Applying CV List</h2> 
+        <table border="1" class="text-center">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Name</th>
+                    <th>CV link</th>
+                    <th>Last Update</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach var="cv" items="${rn.curriculumVitaes}" varStatus="counter">
+                    <c:url value="/send-cv" var="sendCV">
+                        <c:param name="rnId" value="${rnId}"/>
+                        <c:param name="cvId" value="${cv.id}"/>
+                    </c:url>
+                    <tr>
+                        <c:url var="candidate" value="/user?username=${cv.user.username}"/>
+                        <td>${counter.count}</td>
+                        <td><a href="${candidate}">${cv.user.fullname}</a></td>
+                        <td><input type="hidden" readonly="true" cssClass="form-control" value="${cv.url}"/><c:if test="${not empty cv.url}"><a href="${cv.url}" target="_blank">See detail</a></c:if></td>
+                        <td>${cv.lastUpdated}</td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
     </div>
 </div>

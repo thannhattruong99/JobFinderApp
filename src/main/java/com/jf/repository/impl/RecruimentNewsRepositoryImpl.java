@@ -10,7 +10,6 @@ import com.jf.pojos.District;
 import com.jf.pojos.Major;
 import com.jf.pojos.RNewsCV;
 import com.jf.pojos.RecruimentNews;
-import com.jf.pojos.User;
 import com.jf.request.GetRecuitmentNewsRequester;
 import java.util.ArrayList;
 import java.util.List;
@@ -192,15 +191,14 @@ public class RecruimentNewsRepositoryImpl {
         RecruimentNews recruimentNews = session.get(RecruimentNews.class, recruitmentId);
 
         List<CurriculumVitae> curriculumVitaes = null;
-
         if (recruimentNews.getrNewsCVs().size() > 0) {
             List<RNewsCV> rNewsCVs = new ArrayList<RNewsCV>(recruimentNews.getrNewsCVs());
             if (rNewsCVs.size() > 0) {
+                curriculumVitaes = new ArrayList<>();
                 for (RNewsCV rNewsCV : rNewsCVs) {
                     curriculumVitaes.add(rNewsCV.getCurriculumVitae());
                 }
                 recruimentNews.setCurriculumVitaes(curriculumVitaes);
-                System.out.println("recruimentNews size: " + curriculumVitaes.size());
             }
         }
         

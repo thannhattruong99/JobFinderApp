@@ -54,6 +54,7 @@
                 <h3>${rn.title}</h3>
                 <b>Salary:</b> <p> ${rn.minSalary}$ up to max ${rn.maxSalary}$</p>
                 <b>Job type: </b> <p>${rn.jobType}</p>
+                <b>Major:</b><p>${rn.major.name}</p>
                 <b>Address:</b> <p>${rn.address} ${rn.district.name}</p>
                 <b>Description:</b> <p>${rn.description}</p>
                 <c:url var="poster" value="/user?username=${rn.user.username}"/>
@@ -61,9 +62,9 @@
             </div>
             
             <div class="form-group text-center" style="margin-top: 2%">
-                <c:url var="view-detail" value="/view-detail"/>
-                <form action="${view-detail}" method="get">
-                    <input type="hidden" readonly="true" name="rnId" value="${rnId}"/>
+                <c:url var="viewDetail" value="/view-detail"/>
+                <form action="${viewDetail}" method="get">
+                    <input type="hidden" readonly="true" name="rnId" value="${rn.id}"/>
                     <input class="btn btn-primary" type="submit" value="View Detail"/>
                 </form>
             </div>

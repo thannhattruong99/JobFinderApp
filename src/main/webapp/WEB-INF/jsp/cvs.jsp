@@ -8,6 +8,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script src="<c:url value="/js/cvs.js"/>"></script>
 
+<h1 class="text-center">Your CV list </h1>
 <table border="1">
     <thead>
         <tr>
@@ -28,13 +29,13 @@
                 <c:param name="cvId" value="${cv.id}"/>
             </c:url>
             <tr>
-                <form method="get" action="">
+                <form method="Post" action="${sendCV}">
                     <td>${counter.count}</td>
                     <td><input type="text" readonly="true" cssClass="form-control" value="${cv.name}"/></td>
                     <td><input type="text" readonly="true" cssClass="form-control" value="${cv.description}"/></td>
-                    <td><input type="text" readonly="true" cssClass="form-control" value="${cv.url}"/><c:if test="${not empty cv.url}"><a href="${cv.url}" target="_blank">See detail</a></c:if></td>
+                    <td><input type="hidden" readonly="true" cssClass="form-control" value="${cv.url}"/><c:if test="${not empty cv.url}"><a href="${cv.url}" target="_blank">See detail</a></c:if></td>
                     <td>${cv.lastUpdated}</td>
-                    <td><a href="${sendCV}" class="btn btn-primary">Submit</a></td>
+                    <td><input type="submit" value="Submit"/></td>
                 </form>
             </tr>
         </c:forEach>

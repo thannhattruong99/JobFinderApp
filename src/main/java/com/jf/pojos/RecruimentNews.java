@@ -80,7 +80,7 @@ public class RecruimentNews implements Serializable {
     private String image;
     @Transient
     private MultipartFile file;
-    @OneToMany(mappedBy = "curriculumVitae", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "recruitmentNews", fetch = FetchType.EAGER)
     private Set<RNewsCV> rNewsCVs;
     @Transient
     private List<CurriculumVitae> curriculumVitaes;
