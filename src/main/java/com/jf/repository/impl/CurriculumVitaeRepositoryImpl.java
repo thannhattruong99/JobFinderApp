@@ -59,7 +59,7 @@ public class CurriculumVitaeRepositoryImpl {
             CurriculumVitae cv = session.get(CurriculumVitae.class, id);
             session.delete(cv);
             return true;
-        }catch(HibernateException e){
+        }catch(Exception e){
             System.out.println("Error at UserRepository: " + e.getMessage());
         }
         return false;

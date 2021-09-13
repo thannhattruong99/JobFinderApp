@@ -31,11 +31,6 @@
                 <a class="nav-link text-danger" href="<c:url value="/recruitments?username=${pageContext.request.userPrincipal.name}"/>" >My Recruitment News</a>
             </li>
         </sec:authorize>
-                <sec:authorize access="hasRole('ROLE_CANDIDATE')">
-            <li class="nav-item">
-                <a class="nav-link text-danger" href="<c:url value="/admin/users"/>" >My CV</a>
-            </li>
-        </sec:authorize>
         <li class="nav-item">
             <a class="nav-link text-danger" href="<c:url value="/profile"/>?username=${pageContext.request.userPrincipal.name}">${pageContext.request.userPrincipal.name}</a>
         </li>

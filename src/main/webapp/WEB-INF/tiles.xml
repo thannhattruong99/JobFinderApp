@@ -63,4 +63,10 @@ and open the template in the editor.
         <put-attribute name="content" value="/WEB-INF/jsp/create-recruitment-news.jsp" />
         <put-attribute name="footer" value="/WEB-INF/layout/footer.jsp" />
     </definition>
+    <definition name="recruitment-news-detail" extends="baseLayout">
+        <put-attribute name="title" value="Recruitment News" />
+        <put-attribute name="header" value="/WEB-INF/layout/header.jsp" />
+        <put-attribute name="content" value="/WEB-INF/jsp/recruitment-news-detail.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/layout/footer.jsp" />
+    </definition>
 </tiles-definitions>

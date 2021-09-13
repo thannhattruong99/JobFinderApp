@@ -1,5 +1,0 @@
-amazonProperties:
-      endpointUrl: https://jobfinder-storager.s3.ap-southeast-1.amazonaws.com/cv/
-      accessKey: AKIAY2QKNWRSBXFKCXHO
-      secretKey: 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
-      bucketName: jobfinder-storager

@@ -35,6 +35,10 @@
 
 
 <!--table view-->
+<c:url var="create" value="/create-recruitment"/>
+<form action="${create}" method="get">
+    <input type="submit" value="Create recruitment news" />
+</form>
 <div class="row">
     <c:forEach var="rn" items="${recruitmentNewsLst}">
         <div class="card col-md-4">
@@ -56,20 +60,14 @@
                 <b>Poster:</b> <a href="${poster}">${rn.user.fullname}</a>
             </div>
             
-            <c:if test="${pageContext.request.userPrincipal.name != null}">
-                <div class="form-group text-center" style="margin-top: 2%">
-                    <c:url var="cv-list" value="/apply-cvs"/>
-                    <form action="${cv-list}" method="get">
-                        <input type="hidden" readonly="true" name="rnId" value="${rnId}"/>
-                        <input class="btn btn-primary" type="submit" value="Candidate list"/>
-                    </form>
-                </div>
-            </c:if>
-            <c:if test="${pageContext.request.userPrincipal.name == null}">
-                <div class="text-center">
-                    <a href="<c:url value="/login"/>">Login to apply the job</a>
-                </div>
-            </c:if>
+            <div class="form-group text-center" style="margin-top: 2%">
+                <c:url var="view-detail" value="/view-detail"/>
+                <form action="${view-detail}" method="get">
+                    <input type="hidden" readonly="true" name="rnId" value="${rnId}"/>
+                    <input class="btn btn-primary" type="submit" value="View Detail"/>
+                </form>
+            </div>
+
         </div>
     </c:forEach>  
 </div>

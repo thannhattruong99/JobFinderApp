@@ -7,7 +7,6 @@ package com.jf.service.impl;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.services.iot.model.CannedAccessControlList;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -17,6 +16,7 @@ import java.io.IOException;
 import java.util.Date;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,17 +25,18 @@ import org.springframework.web.multipart.MultipartFile;
  * @author truongtn
  */
 @Service
+@PropertySource("classpath:aws.properties")
 public class S3ServiceImpl {
 
     private AmazonS3 s3client;
 
-    @Value("https://jobfinder-storager.s3.ap-southeast-1.amazonaws.com")
+    @Value("${amazonProperties.endpointUrl}")
     private String endpointUrl;
-    @Value("jobfinder-storager")
+    @Value("${amazonProperties.bucketName}")
     private String bucketName;
-    @Value("AKIAY2QKNWRSBXFKCXHO")
+    @Value("${amazonProperties.accessKey}")
     private String accessKey;
-    @Value("3cWA4l6elf4xxC6M5DoRcX9oAjOPgyDka0EN79zw")
+    @Value("${amazonProperties.secretKey}")
     private String secretKey;
 
     @PostConstruct
@@ -45,9 +46,6 @@ public class S3ServiceImpl {
     }
 
     private File convertMultiPartToFile(MultipartFile file) throws IOException {
-        if(file.isEmpty()){
-            System.out.println("EMPTY FILE");
-        }
         File convFile = new File(file.getOriginalFilename());
         FileOutputStream fos = new FileOutputStream(convFile);
         fos.write(file.getBytes());
@@ -65,6 +63,7 @@ public class S3ServiceImpl {
     }
 
     public String uploadFile(MultipartFile multipartFile) {
+        System.out.println("AWS PROPERTIES: " + bucketName);
         String fileUrl = "";
         try {
             File file = convertMultiPartToFile(multipartFile);

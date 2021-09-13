@@ -65,7 +65,8 @@ public class CurriculumVitaeController {
         model.addAttribute("cities", this.userDetailService.getCities());
         model.addAttribute("majors", this.userDetailService.getMajors());
         model.addAttribute("organizations", this.userDetailService.getOrganizations());
-
+        model.addAttribute("curriculum", cv);
+        
         return "profile";
 
     }
@@ -96,13 +97,13 @@ public class CurriculumVitaeController {
     public String remove(Model model,
             @RequestParam(value = "id") String id,
             @RequestParam(value = "username") String username) {
-
+        
         if (curriculumVitaeService.delete(id)) {
             return "redirect:/profile?username=" + username;
         } else {
             model.addAttribute("errMsg", "Something wrong");
         }
-
+        
         model.addAttribute("user", this.userDetailService.getUserDetailByUsername(username));
         model.addAttribute("cities", this.userDetailService.getCities());
         model.addAttribute("majors", this.userDetailService.getMajors());

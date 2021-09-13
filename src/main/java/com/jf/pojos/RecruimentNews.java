@@ -7,6 +7,7 @@ package com.jf.pojos;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,8 +21,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -38,10 +42,13 @@ public class RecruimentNews implements Serializable {
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String id;
+    @NotEmpty(message = "{err.title.empty}")
     private String title;
     private String description;
     @Column(name = "min_salary")
+    @Min(value = 1, message = "{err.salary.negative}")
     private int minSalary;
+    @Min(value = 1, message = "{err.salary.negative}")
     @Column(name = "max_salary")
     private int maxSalary;
     @Column(name = "min_experience_year")
@@ -64,14 +71,35 @@ public class RecruimentNews implements Serializable {
     private District district;
     @Transient
     private int districtId;
+    @Min(value = 1, message = "{err.majorid.empty}")
     @Transient
     private int majorId;
     @ManyToOne
     @JoinColumn(name = "major_id")
     private Major major;
     private String image;
+    @Transient
+    private MultipartFile file;
     @OneToMany(mappedBy = "curriculumVitae", fetch = FetchType.EAGER)
     private Set<RNewsCV> rNewsCVs;
+    @Transient
+    private List<CurriculumVitae> curriculumVitaes;
+
+    public List<CurriculumVitae> getCurriculumVitaes() {
+        return curriculumVitaes;
+    }
+
+    public void setCurriculumVitaes(List<CurriculumVitae> curriculumVitaes) {
+        this.curriculumVitaes = curriculumVitaes;
+    }
+
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
+    }
 
     public Set<RNewsCV> getrNewsCVs() {
         return rNewsCVs;

@@ -5,8 +5,10 @@
  */
 package com.jf.repository.impl;
 
+import com.jf.pojos.CurriculumVitae;
 import com.jf.pojos.District;
 import com.jf.pojos.Major;
+import com.jf.pojos.RNewsCV;
 import com.jf.pojos.RecruimentNews;
 import com.jf.pojos.User;
 import com.jf.request.GetRecuitmentNewsRequester;
@@ -71,28 +73,26 @@ public class RecruimentNewsRepositoryImpl {
 //            predicates.add(p4);
 //        }
 //        Condition 5: district id
-        Predicate p5 = null;
         if (request.getDistrictId() != 0) {
             District district = session.get(District.class, request.getDistrictId());
-            p5 = builder.equal(root.get("district").as(District.class), district);
+            Predicate p5 = builder.equal(root.get("district").as(District.class), district);
             predicates.add(p5);
         }
 
 //      Condiontion 6: major id
-        Predicate p6 = null;
         if (request.getMajorId() != 0) {
             Major major = session.get(Major.class, request.getMajorId());
-            p6 = builder.equal(root.get("major").as(Major.class), major);
+            Predicate p6 = builder.equal(root.get("major").as(Major.class), major);
             predicates.add(p6);
         }
-        
+
 //      Condition 7: Job type  
-        Predicate p7 = null;
-        if(!StringUtils.isEmpty(request.getJobType())){
-            p7 = builder.equal(root.get("jobType").as(String.class), request.getJobType().toUpperCase().trim());
+        if (!StringUtils.isEmpty(request.getJobType())) {
+            Predicate p7 = builder.equal(root.get("jobType").as(String.class), request.getJobType().toUpperCase().trim());
             predicates.add(p7);
         }
 
+//        Combine condition
         Predicate[] predicateArr = new Predicate[predicates.size()];
         predicates.toArray(predicateArr);
 
@@ -153,10 +153,10 @@ public class RecruimentNewsRepositoryImpl {
             p6 = builder.equal(root.get("major").as(Major.class), major);
             predicates.add(p6);
         }
-        
+
 //      Condition 7: Job type  
         Predicate p7 = null;
-        if(!StringUtils.isEmpty(request.getJobType())){
+        if (!StringUtils.isEmpty(request.getJobType())) {
             p7 = builder.equal(root.get("jobType").as(String.class), request.getJobType().toUpperCase().trim());
             predicates.add(p7);
         }
@@ -170,7 +170,43 @@ public class RecruimentNewsRepositoryImpl {
 
         return q.getResultList().size();
     }
-    
+
+    public boolean add(RecruimentNews rn) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        try {
+            Major major = session.get(Major.class, rn.getMajorId());
+            if (major.getId() != 0) {
+                rn.setMajor(major);
+                session.save(rn);
+                return true;
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error at RecruimentNewsRepsitory: " + e.getMessage());
+        }
+        return false;
+    }
+
+    public RecruimentNews getRecruimentNewsDetail(String recruitmentId) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        RecruimentNews recruimentNews = session.get(RecruimentNews.class, recruitmentId);
+
+        List<CurriculumVitae> curriculumVitaes = null;
+
+        if (recruimentNews.getrNewsCVs().size() > 0) {
+            List<RNewsCV> rNewsCVs = new ArrayList<RNewsCV>(recruimentNews.getrNewsCVs());
+            if (rNewsCVs.size() > 0) {
+                for (RNewsCV rNewsCV : rNewsCVs) {
+                    curriculumVitaes.add(rNewsCV.getCurriculumVitae());
+                }
+                recruimentNews.setCurriculumVitaes(curriculumVitaes);
+                System.out.println("recruimentNews size: " + curriculumVitaes.size());
+            }
+        }
+        
+//        result include: 1 RecruitmentNews and List<CurriculumVitae> 
+        return recruimentNews;
+    }
 
     private Predicate[] addPredidateElement(int size, Predicate[] arrPredicates, Predicate p) {
         Predicate[] result = new Predicate[size + 1];

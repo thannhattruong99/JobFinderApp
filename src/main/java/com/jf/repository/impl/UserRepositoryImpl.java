@@ -7,8 +7,6 @@ package com.jf.repository.impl;
 
 import com.jf.pojos.User;
 import com.jf.request.GetUsersRequest;
-import static java.lang.StrictMath.log;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;

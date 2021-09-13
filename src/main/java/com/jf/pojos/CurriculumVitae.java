@@ -51,16 +51,15 @@ public class CurriculumVitae implements Serializable {
     private User user;
     @Transient
     private MultipartFile file;
-    @OneToMany
-    @JoinColumn(name = "recruimentNews")
-    private Set<RecruimentNews> recruitmentNewsSet;
+    @OneToMany(mappedBy = "recruitmentNews")
+    private Set<RNewsCV> rNewsCVs;
 
-    public Set<RecruimentNews> getRecruitmentNewsSet() {
-        return recruitmentNewsSet;
+    public Set<RNewsCV> getrNewsCVs() {
+        return rNewsCVs;
     }
 
-    public void setRecruitmentNewsSet(Set<RecruimentNews> recruitmentNewsSet) {
-        this.recruitmentNewsSet = recruitmentNewsSet;
+    public void setrNewsCVs(Set<RNewsCV> rNewsCVs) {
+        this.rNewsCVs = rNewsCVs;
     }
 
     public MultipartFile getFile() {

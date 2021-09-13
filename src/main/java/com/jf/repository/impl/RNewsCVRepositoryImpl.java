@@ -8,7 +8,6 @@ package com.jf.repository.impl;
 import com.jf.pojos.CurriculumVitae;
 import com.jf.pojos.RNewsCV;
 import com.jf.pojos.RecruimentNews;
-import com.jf.pojos.User;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,23 +22,24 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public class RNewsCVRepositoryImpl {
+
     @Autowired
     private LocalSessionFactoryBean sessionFactory;
-    
-    
-        public boolean add(RNewsCV rNewsCV){
+
+    public boolean add(RNewsCV rNewsCV) {
         Session session = this.sessionFactory.getObject().getCurrentSession();
-        try{
+        try {
             RecruimentNews rn = session.get(RecruimentNews.class, rNewsCV.getRnId());
             CurriculumVitae cv = session.get(CurriculumVitae.class, rNewsCV.getCvId());
             rNewsCV.setRecruitmentNews(rn);
             rNewsCV.setCurriculumVitae(cv);
-            
+
             session.save(rNewsCV);
             return true;
-        }catch(HibernateException e){
+        } catch (HibernateException e) {
             System.out.println("Error at UserRepository: " + e.getMessage());
         }
         return false;
     }
+    
 }

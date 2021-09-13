@@ -5,18 +5,21 @@
  */
 package com.jf.controller;
 
+import com.jf.pojos.RecruimentNews;
 import com.jf.request.GetRecuitmentNewsRequester;
 import com.jf.service.impl.CurriculumVitaeServiceImpl;
 import com.jf.service.impl.RecruimentNewsServiceImpl;
 import com.jf.service.impl.UserServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,37 +44,6 @@ public class RecruitmentNewsController {
         return "index";
     }
 
-//    @RequestMapping("/")
-//     public String index(Model model, @Validated GetRecuitmentNewsRequester searchValue, BindingResult result) {
-//        //if tiles.xml has baselayout -> return page
-//        //if tiles.xml has no baselayout -> find in InternalResourceViewResolver -> return page
-//        
-////        String title = params.getOrDefault("title", "");
-////        int minSalary = Integer.parseInt(params.getOrDefault("minSalary", "0").);
-////        int maxSalary = Integer.parseInt(params.getOrDefault("maxSalary", "0"));
-////        int minExpYear = Integer.parseInt(params.getOrDefault("minExpYear", "0"));
-////        int districtId = Integer.parseInt(params.getOrDefault("districtId", "0"));
-////        int majorId = Integer.parseInt(params.getOrDefault("majorId", "0"));
-////        int pageNum = Integer.parseInt(params.getOrDefault("pageNum", "1"));
-//        
-////        GetRecuitmentNewsRequester request = 
-////                new GetRecuitmentNewsRequester(title, minSalary, maxSalary, 
-////                        minExpYear, majorId, districtId, pageNum);
-////        
-////        model.addAttribute("recruitmentNewsLst", this.recruimentNewsService.getRecruitmentNewsLst(request));
-//        model.addAttribute("cities", this.userDetailService.getCities());
-//        model.addAttribute("majors", this.userDetailService.getMajors());
-////        model.addAttribute("totalRecord", this.recruimentNewsService.count(request));
-//        model.addAttribute("searchValue", new GetRecuitmentNewsRequester());
-//
-//        if(result.hasErrors()){
-//            System.out.println("CO LOI ROI NE");
-//            List<String> errors = responseErrorResult(result);
-//            model.addAttribute("errors", errors);
-//        }
-//        
-//        return "index";
-//    }
     @RequestMapping("/")
     public String index(Model model) {
         //if tiles.xml has baselayout -> return page
@@ -104,14 +76,13 @@ public class RecruitmentNewsController {
 
         return "index";
     }
-    
+
     @RequestMapping("/recruitments")
     public String getRecruitmentByUser(Model model, @RequestParam(name = "username") String username) {
         //if tiles.xml has baselayout -> return page
         //if tiles.xml has no baselayout -> find in InternalResourceViewResolver -> return page
 
         model.addAttribute("recruitmentNewsLst", this.userDetailService.getRecruimentNewsLst(username));
-       
 
         return "recruitment-news";
     }
@@ -128,5 +99,45 @@ public class RecruitmentNewsController {
 
         }
         return errors;
+    }
+
+    @GetMapping("create-recruitment")
+    public String add(Model model) {
+        model.addAttribute("rn", new RecruimentNews());
+        model.addAttribute("cities", this.userDetailService.getCities());
+        model.addAttribute("majors", this.userDetailService.getMajors());
+
+        return "create-recruitment-news";
+    }
+
+    @PostMapping("create-recruitment")
+    public String add(Model model,
+            @ModelAttribute(name = "rn") @Valid RecruimentNews rn,
+            @RequestParam("username") String username,
+            BindingResult result) {
+        model.addAttribute("rn", new RecruimentNews());
+
+        if (!result.hasErrors()) {
+            if (recruimentNewsService.add(rn, username)) {
+                model.addAttribute("recruitmentNewsLst", this.userDetailService.getRecruimentNewsLst(username));
+                model.addAttribute("sucessMsg", "Create recruitment news sucessfully!! ");
+
+                return "recruitment-news";
+            }
+        }
+
+        model.addAttribute("errMsg", "Create recruitment failed. Please try again!! ");
+        model.addAttribute("cities", this.userDetailService.getCities());
+        model.addAttribute("majors", this.userDetailService.getMajors());
+
+        return "create-recruitment-news";
+    }
+
+    @GetMapping("view-detail")
+    public String viewDetail(Model model, @RequestParam(name = "rnId") String rnId) {
+
+        model.addAttribute("rn", recruimentNewsService.getRecruimentNewsDetail(rnId));
+
+        return "recruitment-news-detail";
     }
 }
