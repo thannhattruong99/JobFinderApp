@@ -50,7 +50,7 @@
     </form:select>
                 
     <form:select path="jobType" class="form-control mb-2 mr-sm-2" style="width: 140px">
-        <option value="0" <c:if test="${empty searchValue.jobType}">selected</c:if>>All Job Type</option>
+        <option value="" <c:if test="${empty searchValue.jobType}">selected</c:if>>All Job Type</option>
         <option value="FULL_TIME" <c:if test="${searchValue.jobType == 'FULL_TIME'}">selected</c:if>>Full time</option>
         <option value="PART_TIME" <c:if test="${searchValue.jobType == 'PART_TIME'}">selected</c:if>>Part time</option>
     </form:select>            

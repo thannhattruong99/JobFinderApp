@@ -56,13 +56,15 @@ public class RecruimentNewsRepositoryImpl {
 
 //        Condition 2: min salary
 //        defalut value = 0
-        Predicate p2 = builder.lessThanOrEqualTo(root.get("minSalary").as(int.class), request.getSalary());
-        predicates.add(p2);
-
         //       Condition 3: max salary
 //      default value = 0
-        Predicate p3 = builder.greaterThanOrEqualTo(root.get("maxSalary").as(int.class), request.getSalary());
-        predicates.add(p3);
+        if (request.getSalary() != 0) {
+            Predicate p2 = builder.lessThanOrEqualTo(root.get("minSalary").as(int.class), request.getSalary());
+            predicates.add(p2);
+
+            Predicate p3 = builder.greaterThanOrEqualTo(root.get("maxSalary").as(int.class), request.getSalary());
+            predicates.add(p3);
+        }
 
 //        Condition 4: min experience year
 //        default value = 0
@@ -201,7 +203,7 @@ public class RecruimentNewsRepositoryImpl {
                 recruimentNews.setCurriculumVitaes(curriculumVitaes);
             }
         }
-        
+
 //        result include: 1 RecruitmentNews and List<CurriculumVitae> 
         return recruimentNews;
     }
