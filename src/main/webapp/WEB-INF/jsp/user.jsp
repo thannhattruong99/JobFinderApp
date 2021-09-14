@@ -61,4 +61,40 @@
     <div class="col-md-4 img-fluid">
         POSTER QUẢNG CÁO
     </div>
+    
+   
 </div>   
+         <!--comment-->
+<div class="row">
+    <div class="container p-2">
+        <h2 class="text-center">Average Score: 4 stars</h2>
+
+        <form action="" method="post" class="form-group">
+            <b class="mr-2">Your rating:</b>
+            <input class="mr-2" type="number" name="score" min="1" max="5"/>
+            <input class="mr-2" type="submit" value="Submit"/>
+        </form>
+    </div>
+    
+    
+    <div class="container p-3 border">
+        <h2 class="text-center">Comments</h2>
+        <div class="container p-1 border">
+        
+        </div>
+        
+        <div class="container p-3 border">
+            <form action="commnet" method="post">
+                <label class="align-text-top">Your comment:</label> <textarea name="content"></textarea>
+                <input type="submit" value="submit"/>
+            </form>
+        </div>
+        
+    </div>
+
+    <div class="container border" >
+
+        
+
+    </div>
+</div>

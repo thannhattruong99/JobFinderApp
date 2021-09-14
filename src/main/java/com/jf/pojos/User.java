@@ -87,6 +87,26 @@ public class User implements Serializable {
     private Set<CurriculumVitae> curriculumVitaes;
     @OneToMany(mappedBy = "user")
     private Set<RecruimentNews> recruimentNewsSet;
+    @OneToMany(mappedBy = "employer")
+    private Set<Comment> receivedComments;
+    @OneToMany(mappedBy = "candidate")
+    private Set<Comment> sentComments;
+
+    public Set<Comment> getReceivedComments() {
+        return receivedComments;
+    }
+
+    public void setReceivedComments(Set<Comment> receivedComments) {
+        this.receivedComments = receivedComments;
+    }
+
+    public Set<Comment> getSentComments() {
+        return sentComments;
+    }
+
+    public void setSentComments(Set<Comment> sentComments) {
+        this.sentComments = sentComments;
+    }
 
     public Set<RecruimentNews> getRecruimentNewsSet() {
         return recruimentNewsSet;

@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -21,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public class CurriculumVitaeRepositoryImpl {
-
+    private static final Logger logger = LoggerFactory.getLogger(CurriculumVitaeRepositoryImpl.class);
     @Autowired
     private LocalSessionFactoryBean sessionFactory;
 
@@ -35,7 +37,7 @@ public class CurriculumVitaeRepositoryImpl {
             session.save(cv);
             return true;
         } catch(HibernateException e){
-            System.out.println("Error at CurriculumVitaeRepositoryImpl: " + e.getMessage());
+            logger.error("Error at CurriculumVitaeRepositoryImpl: " + e.getMessage());
         }
         return false;
     }
@@ -48,7 +50,7 @@ public class CurriculumVitaeRepositoryImpl {
             session.save(cv);
             return true;
         } catch(HibernateException e){
-            System.out.println("Error at CurriculumVitaeRepositoryImpl: " + e.getMessage());
+            logger.error("Error at CurriculumVitaeRepositoryImpl: " + e.getMessage());
         }
         return false;
     }
@@ -60,7 +62,7 @@ public class CurriculumVitaeRepositoryImpl {
             session.delete(cv);
             return true;
         }catch(Exception e){
-            System.out.println("Error at UserRepository: " + e.getMessage());
+            logger.error("Error at UserRepository: " + e.getMessage());
         }
         return false;
     }

@@ -26,7 +26,7 @@
             <div class="form-group">
                 <label for="file">Avatar</label>
                 <form:input type="file" id="imgInp" cssClass="form-control" path="file" onchange="loadFile(event)"/>
-                <img id="output"/>
+                <img id="output" style="width: 100%"/>
             </div>
         </div>
         <div class="col-md-8">        
