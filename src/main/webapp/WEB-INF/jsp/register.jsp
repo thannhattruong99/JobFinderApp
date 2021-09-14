@@ -78,7 +78,7 @@
             <div class="form-group">
                 <label>Role</label>
                 <form:select id="role" cssClass="form-control" path="role" onchange="showInputsByRole()">
-                    <option value="ROLE_CANDIDATE" selected="selected">Candidate</option>
+                    <option value="ROLE_CANDIDATE">Candidate</option>
                     <option value="ROLE_EMPLOYER">Employer</option>
                 </form:select>
             </div>

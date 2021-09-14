@@ -45,8 +45,8 @@
             <div class="form-group">
                 <label>Gender</label>
                 <form:select id="gender" path="gender" class="form-control">
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
+                    <option value="Male"<c:if test="${user.gender == 'Male'}"> selected</c:if>>Male</option>
+                    <option value="Female" <c:if test="${user.gender == 'Female'}"> selected</c:if>>Female</option>
                 </form:select>
             </div>
             <div class="form-group">
@@ -72,10 +72,11 @@
                 </form:select>
             </div>
             <div class="form-group">
-                <label>Role</label>
+                <label>Role:</label>
+                
                 <form:select id="role" cssClass="form-control" path="role" onchange="showInputsByRole()">
-                    <option value="ROLE_CANDIDATE" <c:if test="${role == 'ROLE_CANDIDATE'}"> selected</c:if>>Candidate</option>
-                    <option value="ROLE_EMPLOYER" <c:if test="${role == 'ROLE_EMPLOYER'}"> selected</c:if>>Employer</option>
+                    <option value="ROLE_CANDIDATE" <c:if test="${user.role == 'ROLE_CANDIDATE'}"> selected</c:if>>Candidate</option>
+                    <option value="ROLE_EMPLOYER" <c:if test="${user.role == 'ROLE_EMPLOYER'}"> selected</c:if>>Employer</option>
                 </form:select>
             </div>
                 <div class="form-group">
