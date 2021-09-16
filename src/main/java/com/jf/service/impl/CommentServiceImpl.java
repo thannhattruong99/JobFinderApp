@@ -7,8 +7,9 @@ package com.jf.service.impl;
 
 import com.jf.pojos.Comment;
 import com.jf.pojos.User;
-import com.jf.repository.impl.CommentRepositoryImpl;
-import com.jf.repository.impl.UserRepositoryImpl;
+import com.jf.repository.CommentRepository;
+import com.jf.repository.UserRepository;
+import com.jf.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +18,13 @@ import org.springframework.stereotype.Service;
  * @author truongtn
  */
 @Service
-public class CommentServiceImpl{
+public class CommentServiceImpl implements CommentService{
     @Autowired
-    private CommentRepositoryImpl commentRepository;
+    private CommentRepository commentRepository;
     @Autowired
-    private UserRepositoryImpl userRepository;
+    private UserRepository userRepository;
     
+    @Override
     public boolean add(Comment comment){
         User sender = userRepository.getUserDetailByUsername(comment.getSender());
         User receiver = userRepository.getUserDetailByUsername(comment.getReceiver());

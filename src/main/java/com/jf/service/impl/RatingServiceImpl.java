@@ -7,9 +7,9 @@ package com.jf.service.impl;
 
 import com.jf.pojos.Rating;
 import com.jf.pojos.User;
-import com.jf.repository.impl.RatingRepositoryImpl;
-import com.jf.repository.impl.UserRepositoryImpl;
-import org.apache.commons.lang3.StringUtils;
+import com.jf.repository.RatingRepository;
+import com.jf.repository.UserRepository;
+import com.jf.service.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,13 +18,14 @@ import org.springframework.stereotype.Service;
  * @author truongtn
  */
 @Service
-public class RatingServiceImpl {
+public class RatingServiceImpl implements RatingService{
 
     @Autowired
-    private RatingRepositoryImpl ratingRepository;
+    private RatingRepository ratingRepository;
     @Autowired
-    private UserRepositoryImpl userRepository;
+    private UserRepository userRepository;
 
+    @Override
     public boolean addOrUpdate(Rating rating) {
         User senderResult = userRepository.getUserDetailByUsername(rating.getSender());
         User receiverResult = userRepository.getUserDetailByUsername(rating.getReceiver());

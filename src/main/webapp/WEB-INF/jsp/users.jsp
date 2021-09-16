@@ -31,7 +31,7 @@
     
 <!-- paging nation -->
 <ul class="pagination">
-    <c:forEach var="i" begin="1" end="${Math.ceil(totalPage/2)}">
+    <c:forEach var="i" begin="1" end="${Math.ceil(totalPage/10)}">
         <c:url var="pageNumberUrl" value="/admin/users">
             <c:param name="fullname" value="${searchValue.fullname}"/>
             <c:param name="statusMode" value="${searchValue.statusMode}"/>

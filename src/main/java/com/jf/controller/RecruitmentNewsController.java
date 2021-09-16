@@ -7,12 +7,10 @@ package com.jf.controller;
 
 import com.jf.pojos.RecruimentNews;
 import com.jf.request.GetRecuitmentNewsRequester;
-import com.jf.service.impl.CurriculumVitaeServiceImpl;
-import com.jf.service.impl.RecruimentNewsServiceImpl;
-import com.jf.service.impl.UserServiceImpl;
+import com.jf.service.RecruimentNewsService;
+import com.jf.service.UserService;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,11 +31,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class RecruitmentNewsController {
 
     @Autowired
-    private RecruimentNewsServiceImpl recruimentNewsService;
+    private RecruimentNewsService recruimentNewsService;
     @Autowired
-    private UserServiceImpl userDetailService;
-    @Autowired
-    private CurriculumVitaeServiceImpl curriculumVitaeService;
+    private UserService userDetailService;
 
     public String getRecruitmentNewsLst(Model model, @ModelAttribute("recruimentNews") GetRecuitmentNewsRequester request) {
 
@@ -82,7 +78,7 @@ public class RecruitmentNewsController {
         //if tiles.xml has baselayout -> return page
         //if tiles.xml has no baselayout -> find in InternalResourceViewResolver -> return page
 
-        model.addAttribute("recruitmentNewsLst", this.userDetailService.getRecruimentNewsLst(username));
+        model.addAttribute("recruitmentNewsLst", this.recruimentNewsService.getRecruimentNewsLst(username));
 
         return "recruitment-news";
     }
@@ -119,10 +115,7 @@ public class RecruitmentNewsController {
 
         if (!result.hasErrors()) {
             if (recruimentNewsService.add(rn, username)) {
-                model.addAttribute("recruitmentNewsLst", this.userDetailService.getRecruimentNewsLst(username));
-                model.addAttribute("sucessMsg", "Create recruitment news sucessfully!! ");
-
-                return "recruitment-news";
+                return "redirect:/recruitments?username=" + username;
             }
         }
 

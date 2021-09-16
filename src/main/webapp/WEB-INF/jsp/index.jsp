@@ -19,9 +19,9 @@
         ${errMsg}
     </div>
 </c:if>
-<c:if test="${sucessMsg != null}">
+<c:if test="${successMsg != null}">
     <div class="alert alert-primary">
-        ${sucessMsg}
+        ${successMsg}
     </div>
 </c:if>
 
@@ -60,18 +60,27 @@
 
 
 
-
-
-<!-- paging nation -->
+<ul class="pagination">
+    <c:forEach var="i" begin="1" end="${Math.ceil(totalRecord/20)}">
+            <form:form modelAttribute="searchValue" class="form-inline" action="${searchAction}" method="Post">
+                <form:input type="hidden" path="title" value="${searchValue.title}"/>
+                <form:input type="hidden" path="salaryStr" value="${searchValue.salaryStr}"/>
+                <form:input type="hidden" path="majorId" value="${searchValue.majorId}"/>
+                <form:input type="hidden" path="districtId" value="${searchValue.districtId}"/>
+                <form:input type="hidden" path="jobType" value="${searchValue.jobType}"/>
+                <form:input class="page-item" type="submit" path="pageNum" value="${i}"/>
+            </form:form>
+    </c:forEach>
+</ul>
 
 
 <!--table view-->
 <div class="row">
     <c:forEach var="rn" items="${recruitmentNewsLst}">
-        <div class="card col-md-4">
+        <div class="card col-md-3">
             <div class="card-body">
                 <c:if test="${rn.image != null && rn.image.startsWith('https') == true}">
-                    <image class="img-fluid"  style="width: 300px; height:200px" src="<c:url value="${rn.image}"/>"/>
+                    <image class="img-fluid text-center"  style="width: 300px; height:200px" src="<c:url value="${rn.image}"/>"/>
                 </c:if>
                 <c:if test="${rn.image == null || rn.image.startsWith('https') == false}">
                     <image class="img-fluid"  style="width: 300px; height:200px" src="<c:url value="images/default.jpeg"/>"/>
@@ -81,8 +90,11 @@
                 <h4>${rn.title}</h4>
                 <b>Salary:</b> <p> ${rn.minSalary}$ up to max ${rn.maxSalary}$</p>
                 <b>Job type: </b> <p>${rn.jobType}</p>
-                <b>Address:</b> <p>${rn.address} ${rn.district.name}</p>
+                <b>Major: </b> <p>${rn.major.name}</p>
+                <b>Address:</b> 
+                <p>${rn.address} ${rn.district.name}</p>
                 <b>Description:</b> <p>${rn.description}</p>
+                <b>Update time: </b> <p>${rn.lastUpdated}</p>
                 <c:url var="poster" value="/user?sender=${pageContext.request.userPrincipal.name}&receiver=${rn.user.username}"/>
                 <b>Poster:</b> <a href="${poster}">${rn.user.fullname}</a>
             </div>
@@ -107,4 +119,19 @@
         </div>
     </c:forEach>  
 </div>
+
+<!-- paging nation -->
+${totalRecord}
+<ul class="pagination">
+    <c:forEach var="i" begin="1" end="${Math.ceil(totalRecord/20)}">
+            <form:form modelAttribute="searchValue" class="form-inline" action="${searchAction}" method="Post">
+                <form:input type="hidden" path="title" value="${searchValue.title}"/>
+                <form:input type="hidden" path="salaryStr" value="${searchValue.salaryStr}"/>
+                <form:input type="hidden" path="majorId" value="${searchValue.majorId}"/>
+                <form:input type="hidden" path="districtId" value="${searchValue.districtId}"/>
+                <form:input type="hidden" path="jobType" value="${searchValue.jobType}"/>
+                <form:input class="page-item" type="submit" path="pageNum" value="${i}"/>
+            </form:form>
+    </c:forEach>
+</ul>
 

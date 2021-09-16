@@ -104,6 +104,16 @@ public class User implements Serializable {
     private int numberOfVote;
     @Transient
     private int senderScore;
+    @Transient
+    private List<RecruimentNews> recruimentNewsLst;
+
+    public List<RecruimentNews> getRecruimentNewsLst() {
+        return recruimentNewsLst;
+    }
+
+    public void setRecruimentNewsLst(List<RecruimentNews> recruimentNewsLst) {
+        this.recruimentNewsLst = recruimentNewsLst;
+    }
 
     public int getNumberOfVote() {
         return numberOfVote;

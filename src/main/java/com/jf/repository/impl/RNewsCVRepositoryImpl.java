@@ -8,10 +8,9 @@ package com.jf.repository.impl;
 import com.jf.pojos.CurriculumVitae;
 import com.jf.pojos.RNewsCV;
 import com.jf.pojos.RecruimentNews;
+import com.jf.repository.RNewsCVRepository;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,11 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository
 @Transactional
-public class RNewsCVRepositoryImpl {
+public class RNewsCVRepositoryImpl extends BaseRepositoryImpl implements RNewsCVRepository{
 
-    @Autowired
-    private LocalSessionFactoryBean sessionFactory;
-
+    @Override
     public boolean add(RNewsCV rNewsCV) {
         Session session = this.sessionFactory.getObject().getCurrentSession();
         try {

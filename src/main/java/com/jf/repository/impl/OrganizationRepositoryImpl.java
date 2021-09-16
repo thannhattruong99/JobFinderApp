@@ -6,14 +6,12 @@
 package com.jf.repository.impl;
 
 import com.jf.pojos.Organization;
+import com.jf.repository.OrganizationRepository;
 import java.util.List;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import org.hibernate.Session;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,15 +21,14 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository
 @Transactional
-public class OrganizationRepositoryImpl {
-    @Autowired
-    private LocalSessionFactoryBean sessionFactory;
+public class OrganizationRepositoryImpl extends BaseRepositoryImpl implements OrganizationRepository{
 
+    @Override
     public List<Organization> getOrganizations() {
         Session session = this.sessionFactory.getObject().getCurrentSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<Organization> query = builder.createQuery(Organization.class);
-        Root root = query.from(Organization.class);
+        query.from(Organization.class);
         Query q = session.createQuery(query);
         
         return q.getResultList();

@@ -6,14 +6,13 @@
 package com.jf.repository.impl;
 
 import com.jf.pojos.Major;
+import com.jf.repository.MajorRepository;
 import java.util.List;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import org.hibernate.Session;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,15 +22,14 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository
 @Transactional
-public class MajorRepositoryImpl {
-    @Autowired
-    private LocalSessionFactoryBean sessionFactory;
+public class MajorRepositoryImpl extends BaseRepositoryImpl implements MajorRepository{
     
+    @Override
     public List<Major> getMajors(){
         Session session = this.sessionFactory.getObject().getCurrentSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<Major> query = builder.createQuery(Major.class);
-        Root root = query.from(Major.class);
+        query.from(Major.class);
         Query q = session.createQuery(query);
         
         return q.getResultList();

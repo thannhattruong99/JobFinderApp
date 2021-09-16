@@ -2,10 +2,10 @@ package com.jf.controller;
 
 import com.jf.pojos.CurriculumVitae;
 import com.jf.request.GetRecuitmentNewsRequester;
-import com.jf.service.impl.CurriculumVitaeServiceImpl;
-import com.jf.service.impl.RNewsCVServiceImpl;
-import com.jf.service.impl.RecruimentNewsServiceImpl;
-import com.jf.service.impl.UserServiceImpl;
+import com.jf.service.CurriculumVitaeService;
+import com.jf.service.RNewsCVService;
+import com.jf.service.RecruimentNewsService;
+import com.jf.service.UserService;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.validation.Valid;
@@ -34,13 +34,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class CurriculumVitaeController {
 
     @Autowired
-    private CurriculumVitaeServiceImpl curriculumVitaeService;
+    private CurriculumVitaeService curriculumVitaeService;
     @Autowired
-    private RecruimentNewsServiceImpl recruimentNewsService;
+    private RecruimentNewsService recruimentNewsService;
     @Autowired
-    private UserServiceImpl userDetailService;
+    private UserService userDetailService;
     @Autowired
-    private RNewsCVServiceImpl rNewsCVService;
+    private RNewsCVService rNewsCVService;
     
      @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -128,7 +128,7 @@ public class CurriculumVitaeController {
             @RequestParam(name = "rnId") String rnId){
         
         if(rNewsCVService.add(cvId, rnId)){
-            model.addAttribute("sucessMsg", "Submit curriculum vitae sucessfully!!");
+            model.addAttribute("successMsg", "Submit curriculum vitae sucessfully!!");
         }else{
             model.addAttribute("errMsg", "Occured error. Please try again!");
         }

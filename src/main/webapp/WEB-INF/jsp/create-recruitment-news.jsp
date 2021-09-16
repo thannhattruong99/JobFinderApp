@@ -17,9 +17,9 @@
         ${errMsg}
     </div>
 </c:if>
-<c:if test="${sucessMsg != null}">
+<c:if test="${successMsg != null}">
     <div class="alert alert-primary">
-        ${sucessMsg}
+        ${successMsg}
     </div>
 </c:if>
 

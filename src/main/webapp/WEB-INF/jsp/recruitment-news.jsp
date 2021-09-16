@@ -19,9 +19,9 @@
         ${errMsg}
     </div>
 </c:if>
-<c:if test="${sucessMsg != null}">
+<c:if test="${successMsg != null}">
     <div class="alert alert-primary">
-        ${sucessMsg}
+        ${successMsg}
     </div>
 </c:if>
 
@@ -57,7 +57,8 @@
                 <b>Major:</b><p>${rn.major.name}</p>
                 <b>Address:</b> <p>${rn.address} ${rn.district.name}</p>
                 <b>Description:</b> <p>${rn.description}</p>
-                <c:url var="poster" value="/user?username=${rn.user.username}"/>
+                <b>Update time: </b> <p>${rn.lastUpdated}</p>
+                <c:url var="poster" value="/user?sender=${pageContext.request.userPrincipal.name}&receiver=${rn.user.username}"/>
                 <b>Poster:</b> <a href="${poster}">${rn.user.fullname}</a>
             </div>
             

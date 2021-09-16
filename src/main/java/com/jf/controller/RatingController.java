@@ -7,9 +7,8 @@ package com.jf.controller;
 
 import com.jf.pojos.Comment;
 import com.jf.pojos.Rating;
-import com.jf.pojos.User;
-import com.jf.service.impl.RatingServiceImpl;
-import com.jf.service.impl.UserServiceImpl;
+import com.jf.service.RatingService;
+import com.jf.service.UserService;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,7 +16,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -27,9 +25,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class RatingController {
 
     @Autowired
-    private RatingServiceImpl ratingService;
+    private RatingService ratingService;
     @Autowired
-    private UserServiceImpl userDetailService;
+    private UserService userDetailService;
 
     @PostMapping("/rating")
     public String addOrUpdate(Model model,

@@ -7,14 +7,13 @@ package com.jf.repository.impl;
 
 import com.jf.pojos.Rating;
 import com.jf.pojos.User;
+import com.jf.repository.RatingRepository;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.hibernate.Session;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,11 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository
 @Transactional
-public class RatingRepositoryImpl {
+public class RatingRepositoryImpl extends BaseRepositoryImpl implements RatingRepository{
 
-    @Autowired
-    private LocalSessionFactoryBean sessionFactory;
-
+    @Override
     public Rating rating(User sender, User receiver) {
         Session session = this.sessionFactory.getObject().getCurrentSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -51,6 +48,7 @@ public class RatingRepositoryImpl {
         return null;
     }
 
+    @Override
     public boolean addOrUpdate(Rating rating) {
         Session session = this.sessionFactory.getObject().getCurrentSession();
         try {

@@ -10,6 +10,7 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.jf.service.AWSService;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,7 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Service
 @PropertySource("classpath:aws.properties")
-public class S3ServiceImpl {
+public class AWSServiceImpl implements AWSService{
 
     private AmazonS3 s3client;
 
@@ -62,8 +63,8 @@ public class S3ServiceImpl {
                 .withCannedAcl(com.amazonaws.services.s3.model.CannedAccessControlList.PublicRead));
     }
 
+    @Override
     public String uploadFile(MultipartFile multipartFile) {
-        System.out.println("AWS PROPERTIES: " + bucketName);
         String fileUrl = "";
         try {
             File file = convertMultiPartToFile(multipartFile);

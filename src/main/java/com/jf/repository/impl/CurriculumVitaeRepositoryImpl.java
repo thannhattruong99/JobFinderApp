@@ -7,10 +7,9 @@ package com.jf.repository.impl;
 
 import com.jf.pojos.CurriculumVitae;
 import com.jf.pojos.User;
+import com.jf.repository.CurriculumVitaeRepository;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.slf4j.Logger;
@@ -22,11 +21,10 @@ import org.slf4j.LoggerFactory;
  */
 @Repository
 @Transactional
-public class CurriculumVitaeRepositoryImpl {
+public class CurriculumVitaeRepositoryImpl extends BaseRepositoryImpl implements CurriculumVitaeRepository{
     private static final Logger logger = LoggerFactory.getLogger(CurriculumVitaeRepositoryImpl.class);
-    @Autowired
-    private LocalSessionFactoryBean sessionFactory;
 
+    @Override
     public boolean update(CurriculumVitae updateCV) {
         try {
             Session session = this.sessionFactory.getObject().getCurrentSession();
@@ -42,6 +40,7 @@ public class CurriculumVitaeRepositoryImpl {
         return false;
     }
     
+    @Override
     public boolean add(CurriculumVitae cv) {
         try {
             Session session = this.sessionFactory.getObject().getCurrentSession();
@@ -55,6 +54,7 @@ public class CurriculumVitaeRepositoryImpl {
         return false;
     }
     
+    @Override
     public boolean deleteCV(String id){
         Session session = this.sessionFactory.getObject().getCurrentSession();
         try{
@@ -65,6 +65,5 @@ public class CurriculumVitaeRepositoryImpl {
             logger.error("Error at UserRepository: " + e.getMessage());
         }
         return false;
-    }
-    
+    }   
 }

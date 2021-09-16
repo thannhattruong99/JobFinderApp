@@ -6,8 +6,10 @@
 package com.jf.service.impl;
 
 import com.jf.pojos.CurriculumVitae;
-import com.jf.repository.impl.CurriculumVitaeRepositoryImpl;
-import com.jf.repository.impl.UserRepositoryImpl;
+import com.jf.repository.CurriculumVitaeRepository;
+import com.jf.repository.UserRepository;
+import com.jf.service.AWSService;
+import com.jf.service.CurriculumVitaeService;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,34 +20,38 @@ import org.springframework.stereotype.Service;
  * @author truongtn
  */
 @Service
-public class CurriculumVitaeServiceImpl {
+public class CurriculumVitaeServiceImpl implements CurriculumVitaeService{
 
     @Autowired
-    private CurriculumVitaeRepositoryImpl curriculumVitaeRepository;
+    private CurriculumVitaeRepository curriculumVitaeRepository;
     @Autowired
-    private UserRepositoryImpl userRepository;
+    private UserRepository userRepository;
     @Autowired
-    private S3ServiceImpl s3ServiceImpl;
+    private AWSService awsService;
 
+    @Override
     public boolean add(CurriculumVitae cv) {
         if(cv.getFile() != null){
-            cv.setUrl(s3ServiceImpl.uploadFile(cv.getFile()));
+            cv.setUrl(awsService.uploadFile(cv.getFile()));
         }
         return curriculumVitaeRepository.add(cv);
     }
 
+    @Override
     public boolean update(CurriculumVitae cv) {
         if(cv.getFile() != null){
-            cv.setUrl(s3ServiceImpl.uploadFile(cv.getFile()));
+            cv.setUrl(awsService.uploadFile(cv.getFile()));
         }
         
         return curriculumVitaeRepository.update(cv);
     }
 
+    @Override
     public boolean delete(String id) {
         return curriculumVitaeRepository.deleteCV(id);
     }
 
+    @Override
     public List<CurriculumVitae> getCVByUserName(String username) {
         return new ArrayList<>(userRepository.getUserDetailByUsername(username).getCurriculumVitaes());
     }

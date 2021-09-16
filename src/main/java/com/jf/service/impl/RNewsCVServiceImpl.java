@@ -6,7 +6,8 @@
 package com.jf.service.impl;
 
 import com.jf.pojos.RNewsCV;
-import com.jf.repository.impl.RNewsCVRepositoryImpl;
+import com.jf.repository.RNewsCVRepository;
+import com.jf.service.RNewsCVService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +16,11 @@ import org.springframework.stereotype.Service;
  * @author truongtn
  */
 @Service
-public class RNewsCVServiceImpl {
+public class RNewsCVServiceImpl implements RNewsCVService{
     @Autowired
-    private RNewsCVRepositoryImpl rNewsCVRepository;
+    private RNewsCVRepository rNewsCVRepository;
     
+    @Override
     public boolean add(String cvId, String rnId){
         RNewsCV rncv = new RNewsCV(cvId, rnId);
         return rNewsCVRepository.add(rncv);

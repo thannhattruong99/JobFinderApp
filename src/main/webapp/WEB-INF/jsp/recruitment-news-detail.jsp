@@ -19,9 +19,9 @@
         ${errMsg}
     </div>
 </c:if>
-<c:if test="${sucessMsg != null}">
+<c:if test="${successMsg != null}">
     <div class="alert alert-primary">
-        ${sucessMsg}
+        ${successMsg}
     </div>
 </c:if>
 
@@ -52,6 +52,7 @@
             <b>Major:</b><p>${rn.major.name}</p>
             <b>Address:</b> <p>${rn.address} ${rn.district.name}</p>
             <b>Description:</b> <p>${rn.description}</p>
+            <b>Update time: </b> <p>${rn.lastUpdated}</p>
             <b>Poster:</b> <p>${rn.user.fullname}</p>
         </div>
     </div>

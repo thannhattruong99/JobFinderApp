@@ -10,7 +10,7 @@ import com.jf.pojos.CurriculumVitae;
 import com.jf.pojos.Rating;
 import com.jf.pojos.User;
 import com.jf.request.GetUsersRequest;
-import com.jf.service.impl.UserServiceImpl;
+import com.jf.service.UserService;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -23,6 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -34,10 +35,11 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author truongtn
  */
 @Controller
+@ControllerAdvice
 public class UserController {
 
     @Autowired
-    private UserServiceImpl userDetailService;
+    private UserService userDetailService;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -134,7 +136,7 @@ public class UserController {
     }
 
     @GetMapping("/user")
-    public String getUser(Model model, 
+    public String getUser(Model model,
             @RequestParam(value = "sender") String sender,
             @RequestParam(value = "receiver") String receiver) {
 

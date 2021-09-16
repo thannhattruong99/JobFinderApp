@@ -6,9 +6,8 @@
 package com.jf.repository.impl;
 
 import com.jf.pojos.Comment;
+import com.jf.repository.CommentRepository;
 import org.hibernate.Session;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,11 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository
 @Transactional
-public class CommentRepositoryImpl {
+public class CommentRepositoryImpl extends BaseRepositoryImpl implements CommentRepository{
 
-    @Autowired
-    private LocalSessionFactoryBean sessionFactory;
-
+    @Override
     public boolean add(Comment comment) {
         try {
             Session session = this.sessionFactory.getObject().getCurrentSession();

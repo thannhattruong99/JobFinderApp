@@ -6,7 +6,7 @@
 package com.jf.service.impl;
 
 import com.jf.pojos.City;
-import com.jf.repository.impl.DistrictRepositoryImpl;
+import com.jf.repository.DistrictRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class DistrictCityServiceImpl {
     @Autowired
-    private DistrictRepositoryImpl districtRepository;
+    private DistrictRepository districtRepository;
     
     
     public List<City> getCities(){

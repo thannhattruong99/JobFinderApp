@@ -7,9 +7,8 @@ package com.jf.controller;
 
 import com.jf.pojos.Comment;
 import com.jf.pojos.Rating;
-import com.jf.pojos.User;
-import com.jf.service.impl.CommentServiceImpl;
-import com.jf.service.impl.UserServiceImpl;
+import com.jf.service.CommentService;
+import com.jf.service.UserService;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,9 +24,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class CommentController {
     @Autowired
-    private CommentServiceImpl commentService;
+    private CommentService commentService;
     @Autowired
-    private UserServiceImpl userDetailService;
+    private UserService userDetailService;
     
     
     @PostMapping("comment")

@@ -10,6 +10,8 @@ import com.jf.pojos.District;
 import com.jf.pojos.Major;
 import com.jf.pojos.RNewsCV;
 import com.jf.pojos.RecruimentNews;
+import com.jf.pojos.User;
+import com.jf.repository.RecruimentNewsRepository;
 import com.jf.request.GetRecuitmentNewsRequester;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +22,6 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Session;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,13 +31,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository
 @Transactional
-public class RecruimentNewsRepositoryImpl {
+public class RecruimentNewsRepositoryImpl extends BaseRepositoryImpl implements RecruimentNewsRepository{
 
-    @Autowired
-    private LocalSessionFactoryBean sessionFactory;
-
-    private static final int PAGING = 10;
-
+    @Override
     public List<RecruimentNews> getRecruimentNewsLst(GetRecuitmentNewsRequester request) {
         Session session = this.sessionFactory.getObject().getCurrentSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -106,6 +102,7 @@ public class RecruimentNewsRepositoryImpl {
         return q.getResultList();
     }
 
+    @Override
     public int count(GetRecuitmentNewsRequester request) {
         Session session = this.sessionFactory.getObject().getCurrentSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -124,13 +121,15 @@ public class RecruimentNewsRepositoryImpl {
 
 //        Condition 2: min salary
 //        defalut value = 0
-        Predicate p2 = builder.lessThanOrEqualTo(root.get("minSalary").as(int.class), request.getSalary());
-        predicates.add(p2);
-
         //       Condition 3: max salary
 //      default value = 0
-        Predicate p3 = builder.greaterThanOrEqualTo(root.get("maxSalary").as(int.class), request.getSalary());
-        predicates.add(p3);
+        if (request.getSalary() != 0) {
+            Predicate p2 = builder.lessThanOrEqualTo(root.get("minSalary").as(int.class), request.getSalary());
+            predicates.add(p2);
+
+            Predicate p3 = builder.greaterThanOrEqualTo(root.get("maxSalary").as(int.class), request.getSalary());
+            predicates.add(p3);
+        }
 
 //        Condition 4: min experience year
 //        default value = 0
@@ -140,28 +139,26 @@ public class RecruimentNewsRepositoryImpl {
 //            predicates.add(p4);
 //        }
 //        Condition 5: district id
-        Predicate p5 = null;
         if (request.getDistrictId() != 0) {
             District district = session.get(District.class, request.getDistrictId());
-            p5 = builder.equal(root.get("district").as(District.class), district);
+            Predicate p5 = builder.equal(root.get("district").as(District.class), district);
             predicates.add(p5);
         }
 
 //      Condiontion 6: major id
-        Predicate p6 = null;
         if (request.getMajorId() != 0) {
             Major major = session.get(Major.class, request.getMajorId());
-            p6 = builder.equal(root.get("major").as(Major.class), major);
+            Predicate p6 = builder.equal(root.get("major").as(Major.class), major);
             predicates.add(p6);
         }
 
 //      Condition 7: Job type  
-        Predicate p7 = null;
         if (!StringUtils.isEmpty(request.getJobType())) {
-            p7 = builder.equal(root.get("jobType").as(String.class), request.getJobType().toUpperCase().trim());
+            Predicate p7 = builder.equal(root.get("jobType").as(String.class), request.getJobType().toUpperCase().trim());
             predicates.add(p7);
         }
 
+//        Combine condition
         Predicate[] predicateArr = new Predicate[predicates.size()];
         predicates.toArray(predicateArr);
 
@@ -172,6 +169,7 @@ public class RecruimentNewsRepositoryImpl {
         return q.getResultList().size();
     }
 
+    @Override
     public boolean add(RecruimentNews rn) {
         Session session = this.sessionFactory.getObject().getCurrentSession();
         try {
@@ -188,6 +186,7 @@ public class RecruimentNewsRepositoryImpl {
         return false;
     }
 
+    @Override
     public RecruimentNews getRecruimentNewsDetail(String recruitmentId) {
         Session session = this.sessionFactory.getObject().getCurrentSession();
         RecruimentNews recruimentNews = session.get(RecruimentNews.class, recruitmentId);
@@ -208,13 +207,20 @@ public class RecruimentNewsRepositoryImpl {
         return recruimentNews;
     }
 
-    private Predicate[] addPredidateElement(int size, Predicate[] arrPredicates, Predicate p) {
-        Predicate[] result = new Predicate[size + 1];
-        for (int i = 0; i < size; i++) {
-            result[i] = arrPredicates[i];
-        }
-        result[size] = p;
+    @Override
+    public List<RecruimentNews> getRecruimentNewsSetByUser(User user) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<RecruimentNews> query = builder.createQuery(RecruimentNews.class);
+        Root root = query.from(RecruimentNews.class);
+        query = query.select(root).orderBy(builder.desc(root.get("lastUpdated")));
 
-        return result;
+        Predicate p1 = builder.equal(root.get("user").as(User.class), user);
+        query.where(p1);
+
+        Query q = session.createQuery(query);
+
+        return q.getResultList();
     }
+
 }

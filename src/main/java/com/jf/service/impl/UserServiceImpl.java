@@ -10,16 +10,15 @@ import com.cloudinary.utils.ObjectUtils;
 import com.jf.pojos.City;
 import com.jf.pojos.Major;
 import com.jf.pojos.Organization;
-import com.jf.pojos.RecruimentNews;
 import com.jf.pojos.User;
-import com.jf.repository.impl.DistrictRepositoryImpl;
-import com.jf.repository.impl.MajorRepositoryImpl;
-import com.jf.repository.impl.OrganizationRepositoryImpl;
-import com.jf.repository.impl.RatingRepositoryImpl;
-import com.jf.repository.impl.UserRepositoryImpl;
+import com.jf.repository.DistrictRepository;
+import com.jf.repository.MajorRepository;
+import com.jf.repository.OrganizationRepository;
+import com.jf.repository.RatingRepository;
+import com.jf.repository.UserRepository;
 import com.jf.request.GetUsersRequest;
+import com.jf.service.UserService;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +28,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -39,18 +37,18 @@ import org.springframework.stereotype.Service;
  * @author truongtn
  */
 @Service("userDetailsService")
-public class UserServiceImpl implements UserDetailsService {
+public class UserServiceImpl implements UserService {
 
     @Autowired
-    private OrganizationRepositoryImpl organizationRepository;
+    private OrganizationRepository organizationRepository;
     @Autowired
-    private DistrictRepositoryImpl districtRepository;
+    private DistrictRepository districtRepository;
     @Autowired
-    private MajorRepositoryImpl majorRepository;
+    private MajorRepository majorRepository;
     @Autowired
-    private UserRepositoryImpl userRepository;
+    private UserRepository userRepository;
     @Autowired
-    private RatingRepositoryImpl ratingRepository;
+    private RatingRepository ratingRepository;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
     @Autowired
@@ -70,6 +68,7 @@ public class UserServiceImpl implements UserDetailsService {
                 user.getPassword(), auth);
     }
 
+    @Override
     public String add(User user) {
         String errMsg = "";
         try {
@@ -94,52 +93,55 @@ public class UserServiceImpl implements UserDetailsService {
         return errMsg;
     }
 
+    @Override
     public int count(String fullname, String statusMode) {
         return userRepository.count(fullname, statusMode);
     }
 
+    @Override
     public List<User> getUsers(GetUsersRequest request) {
         return userRepository.getUsers(request);
     }
 
+    @Override
     public boolean changeStatus(String id, boolean active) {
         return userRepository.changeStatus(id, active);
     }
 
+    @Override
     public List<City> getCities() {
         return districtRepository.getCities();
     }
 
+    @Override
     public List<Major> getMajors() {
         return majorRepository.getMajors();
     }
 
+    @Override
     public List<Organization> getOrganizations() {
         return organizationRepository.getOrganizations();
     }
 
+    @Override
     public User getUserDetailByUsername(String username) {
         return userRepository.getUserDetailByUsername(username);
     }
 
+    @Override
     public User getUserDetail(String sender, String receiver) {
-        User reciver = userRepository.getUserDetailByUsername(receiver);
+        User result = userRepository.getUserDetailByUsername(receiver);
 
         if (!StringUtils.isEmpty(sender)) {
             User senderInfor = userRepository.getUserDetailByUsername(sender);
 
-            if (senderInfor.getRole().equals(User.CANDIDATE) && reciver.getReceivedRatings().size() > 0) {
-                if(ratingRepository.rating(senderInfor, reciver) != null){
-                    reciver.setSenderScore(ratingRepository.rating(senderInfor, reciver).getScore());
+            if (senderInfor.getRole().equals(User.CANDIDATE) && result.getReceivedRatings().size() > 0) {
+                if(ratingRepository.rating(senderInfor, result) != null){
+                    result.setSenderScore(ratingRepository.rating(senderInfor, result).getScore());
                 }
             }
         }
 
-        return reciver;
-    }
-
-    public List<RecruimentNews> getRecruimentNewsLst(String username) {
-        return new ArrayList<RecruimentNews>(this.userRepository.getRecruimentNewsSetByUser(username)
-                .getRecruimentNewsSet());
+        return result;
     }
 }

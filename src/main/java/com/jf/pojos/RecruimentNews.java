@@ -33,7 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Entity
 @Table(name = "RecruitmentNews")
-public class RecruimentNews implements Serializable {
+public class RecruimentNews implements Serializable,Comparable<RecruimentNews> {
 
     public static final String FULL_TIME = "FULL_TIME";
     public static final String PART_TIME = "PART_TIME";
@@ -243,6 +243,11 @@ public class RecruimentNews implements Serializable {
 
     public void setMajor(Major major) {
         this.major = major;
+    }
+
+    @Override
+    public int compareTo(RecruimentNews o) {
+        return lastUpdated.compareTo(o.getLastUpdated());
     }
 
 }
