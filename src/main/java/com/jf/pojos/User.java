@@ -7,6 +7,7 @@ package com.jf.pojos;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -87,10 +88,70 @@ public class User implements Serializable {
     private Set<CurriculumVitae> curriculumVitaes;
     @OneToMany(mappedBy = "user")
     private Set<RecruimentNews> recruimentNewsSet;
-    @OneToMany(mappedBy = "employer")
+    @OneToMany(mappedBy = "employer", fetch = FetchType.EAGER)
     private Set<Comment> receivedComments;
-    @OneToMany(mappedBy = "candidate")
+    @OneToMany(mappedBy = "candidate", fetch = FetchType.EAGER)
     private Set<Comment> sentComments;
+    @Transient
+    private List<Comment> comments;
+    @OneToMany(mappedBy = "employer", fetch = FetchType.EAGER)
+    private Set<Rating> receivedRatings;
+    @OneToMany(mappedBy = "candidate", fetch = FetchType.EAGER)
+    private Set<Rating> sentRatings;
+    @Transient
+    private float averageScore;
+    @Transient
+    private int numberOfVote;
+    @Transient
+    private int senderScore;
+
+    public int getNumberOfVote() {
+        return numberOfVote;
+    }
+
+    public void setNumberOfVote(int numberOfVote) {
+        this.numberOfVote = numberOfVote;
+    }
+
+    public int getSenderScore() {
+        return senderScore;
+    }
+
+    public void setSenderScore(int senderScore) {
+        this.senderScore = senderScore;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public float getAverageScore() {
+        return averageScore;
+    }
+
+    public void setAverageScore(float averageScore) {
+        this.averageScore = averageScore;
+    }
+
+    public Set<Rating> getReceivedRatings() {
+        return receivedRatings;
+    }
+
+    public void setReceivedRatings(Set<Rating> receivedRatings) {
+        this.receivedRatings = receivedRatings;
+    }
+
+    public Set<Rating> getSentRatings() {
+        return sentRatings;
+    }
+
+    public void setSentRatings(Set<Rating> sentRatings) {
+        this.sentRatings = sentRatings;
+    }
 
     public Set<Comment> getReceivedComments() {
         return receivedComments;

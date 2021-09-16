@@ -15,6 +15,7 @@ import com.jf.pojos.User;
 import com.jf.repository.impl.DistrictRepositoryImpl;
 import com.jf.repository.impl.MajorRepositoryImpl;
 import com.jf.repository.impl.OrganizationRepositoryImpl;
+import com.jf.repository.impl.RatingRepositoryImpl;
 import com.jf.repository.impl.UserRepositoryImpl;
 import com.jf.request.GetUsersRequest;
 import java.io.IOException;
@@ -23,6 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -47,6 +49,8 @@ public class UserServiceImpl implements UserDetailsService {
     private MajorRepositoryImpl majorRepository;
     @Autowired
     private UserRepositoryImpl userRepository;
+    @Autowired
+    private RatingRepositoryImpl ratingRepository;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
     @Autowired
@@ -116,6 +120,22 @@ public class UserServiceImpl implements UserDetailsService {
 
     public User getUserDetailByUsername(String username) {
         return userRepository.getUserDetailByUsername(username);
+    }
+
+    public User getUserDetail(String sender, String receiver) {
+        User reciver = userRepository.getUserDetailByUsername(receiver);
+
+        if (!StringUtils.isEmpty(sender)) {
+            User senderInfor = userRepository.getUserDetailByUsername(sender);
+
+            if (senderInfor.getRole().equals(User.CANDIDATE) && reciver.getReceivedRatings().size() > 0) {
+                if(ratingRepository.rating(senderInfor, reciver) != null){
+                    reciver.setSenderScore(ratingRepository.rating(senderInfor, reciver).getScore());
+                }
+            }
+        }
+
+        return reciver;
     }
 
     public List<RecruimentNews> getRecruimentNewsLst(String username) {

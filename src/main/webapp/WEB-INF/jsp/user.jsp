@@ -7,14 +7,18 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
-
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <h1 class="text text-center">${user.fullname}</h1>
+<c:if test="${errMsg != null}">
+    <div class="alert alert-danger">
+        ${errMsg}
+    </div>
+</c:if>
 <div class="row">
     <div class="col-md-4">
         <div class="form-group">
             <img id="output" src="${user.avatar}" style="height: 100%; width: 100%"/>
-            <form:input type="file" id="imgInp" cssClass="form-control" path="file" onchange="loadFile(event)"/>
         </div>
     </div>
     <!-- end col-md-4 -->
@@ -64,37 +68,51 @@
     
    
 </div>   
-         <!--comment-->
+        
+<!--comment-->
 <div class="row">
     <div class="container p-2">
-        <h2 class="text-center">Average Score: 4 stars</h2>
-
-        <form action="" method="post" class="form-group">
-            <b class="mr-2">Your rating:</b>
-            <input class="mr-2" type="number" name="score" min="1" max="5"/>
-            <input class="mr-2" type="submit" value="Submit"/>
-        </form>
+        <h2 class="text-center">Average Score: ${user.averageScore} stars (${user.numberOfVote} votes)</h2>
+        <c:if test="${pageContext.request.userPrincipal.name != null}">
+            <sec:authorize access="hasRole('ROLE_CANDIDATE')">
+                <form:form action="rating" method="post" modelAttribute="rating">
+                    <b class="mr-2">Your rating:</b>
+                    <form:input class="mr-2" type="number" path="score" min="1" max="5" value="${user.senderScore}"/>
+                    <p>Rating Score is from 1 to 5 star</p>
+                    <form:input type="hidden" readonly="true" path="sender" value="${pageContext.request.userPrincipal.name}"/>
+                    <form:input type="hidden" readonly="true" path="receiver" value="${user.username}"/>
+                    <input class="mr-2" type="submit" value="Submit"/>
+                </form:form>
+            </sec:authorize>
+        </c:if>
     </div>
     
     
     <div class="container p-3 border">
         <h2 class="text-center">Comments</h2>
-        <div class="container p-1 border">
+        <c:forEach var="cmt" items="${user.comments}">
+            <div class="container p-1 border">
+                <b class="mr-4">${cmt.candidate.fullname}:</b>${cmt.content}
+            </div>
+            
+        </c:forEach>
         
-        </div>
-        
-        <div class="container p-3 border">
-            <form action="commnet" method="post">
-                <label class="align-text-top">Your comment:</label> <textarea name="content"></textarea>
-                <input type="submit" value="submit"/>
-            </form>
-        </div>
         
     </div>
 
     <div class="container border" >
-
-        
-
+        <c:if test="${pageContext.request.userPrincipal.name != null}">
+            <sec:authorize access="hasRole('ROLE_CANDIDATE')">
+                <div class="container p-3 border">
+                    <form:form action="comment" method="post" modelAttribute="comment">
+                        <form:errors path="*" cssClass="alert alert-danger" element="div"/>
+                        <label class="align-text-top">Your comment:</label> <form:textarea path="content"></form:textarea>
+                        <form:input type="hidden" readonly="true" path="sender" value="${pageContext.request.userPrincipal.name}"/>
+                        <form:input type="hidden" readonly="true" path="receiver" value="${user.username}"/>
+                        <input type="submit" value="submit"/>
+                    </form:form>
+                </div>
+            </sec:authorize>
+        </c:if>
     </div>
 </div>

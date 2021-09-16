@@ -71,19 +71,19 @@
         <div class="card col-md-4">
             <div class="card-body">
                 <c:if test="${rn.image != null && rn.image.startsWith('https') == true}">
-                    <image class="img-fluid" src="<c:url value="${rn.image}"/>"/>
+                    <image class="img-fluid"  style="width: 300px; height:200px" src="<c:url value="${rn.image}"/>"/>
                 </c:if>
                 <c:if test="${rn.image == null || rn.image.startsWith('https') == false}">
-                    <image class="img-fluid" src="<c:url value="images/default.jpeg"/>"/>
+                    <image class="img-fluid"  style="width: 300px; height:200px" src="<c:url value="images/default.jpeg"/>"/>
                 </c:if>
             </div>
             <div class="card-footer bg-light">
-                <h3>${rn.title}</h3>
+                <h4>${rn.title}</h4>
                 <b>Salary:</b> <p> ${rn.minSalary}$ up to max ${rn.maxSalary}$</p>
                 <b>Job type: </b> <p>${rn.jobType}</p>
                 <b>Address:</b> <p>${rn.address} ${rn.district.name}</p>
                 <b>Description:</b> <p>${rn.description}</p>
-                <c:url var="poster" value="/user?username=${rn.user.username}"/>
+                <c:url var="poster" value="/user?sender=${pageContext.request.userPrincipal.name}&receiver=${rn.user.username}"/>
                 <b>Poster:</b> <a href="${poster}">${rn.user.fullname}</a>
             </div>
             

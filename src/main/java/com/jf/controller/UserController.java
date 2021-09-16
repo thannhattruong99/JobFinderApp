@@ -5,7 +5,9 @@
  */
 package com.jf.controller;
 
+import com.jf.pojos.Comment;
 import com.jf.pojos.CurriculumVitae;
+import com.jf.pojos.Rating;
 import com.jf.pojos.User;
 import com.jf.request.GetUsersRequest;
 import com.jf.service.impl.UserServiceImpl;
@@ -132,10 +134,13 @@ public class UserController {
     }
 
     @GetMapping("/user")
-    public String getUser(Model model, @RequestParam(value = "username") String username) {
+    public String getUser(Model model, 
+            @RequestParam(value = "sender") String sender,
+            @RequestParam(value = "receiver") String receiver) {
 
-        User user = userDetailService.getUserDetailByUsername(username);
-        model.addAttribute("user", user);
+        model.addAttribute("user", userDetailService.getUserDetail(sender, receiver));
+        model.addAttribute("comment", new Comment());
+        model.addAttribute("rating", new Rating());
 
         return "user";
     }

@@ -5,8 +5,12 @@
  */
 package com.jf.repository.impl;
 
+import com.jf.pojos.Comment;
+import com.jf.pojos.Rating;
 import com.jf.pojos.User;
 import com.jf.request.GetUsersRequest;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -160,22 +164,44 @@ public class UserRepositoryImpl {
         return user;
     }
 
+    
+    
+    
     public User getUserDetailByUsername(String username) {
         Session session = this.sessionFactory.getObject().getCurrentSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<User> query = builder.createQuery(User.class);
         Root root = query.from(User.class);
 
-        Predicate p1 = null;
         if (!username.isEmpty()) {
-            p1 = builder.equal(root.get("username").as(String.class),
+            Predicate p1 = builder.equal(root.get("username").as(String.class),
                     String.format("%s", username));
             query.where(p1);
         }
 
         Query q = session.createQuery(query);
 
-        return (User) q.getSingleResult();
+        User user = (User) q.getSingleResult();
+
+        List<Comment> comments = new ArrayList<>(user.getReceivedComments());
+        List<Rating> ratings = new ArrayList<>(user.getReceivedRatings());
+
+        if (comments.size() > 0) {
+            Collections.sort(comments);
+            user.setComments(comments);
+        }
+
+        int sizeOfRatings;
+        if ((sizeOfRatings = ratings.size()) > 0) {
+            float totalOfRating = 0;
+            for (Rating rating : ratings) {
+                totalOfRating += rating.getScore();
+            }
+            user.setAverageScore((float) Math.ceil((totalOfRating / sizeOfRatings) * 10) / 10);
+            user.setNumberOfVote(sizeOfRatings);
+        }
+
+        return user;
     }
 
     public User getRecruimentNewsSetByUser(String username) {
@@ -184,9 +210,8 @@ public class UserRepositoryImpl {
         CriteriaQuery<User> query = builder.createQuery(User.class);
         Root root = query.from(User.class);
 
-        Predicate p1 = null;
         if (!username.isEmpty()) {
-            p1 = builder.equal(root.get("username").as(String.class),
+            Predicate p1 = builder.equal(root.get("username").as(String.class),
                     String.format("%s", username));
             query.where(p1);
         }
@@ -197,4 +222,5 @@ public class UserRepositoryImpl {
         result.getRecruimentNewsSet().size();
         return result;
     }
+
 }
