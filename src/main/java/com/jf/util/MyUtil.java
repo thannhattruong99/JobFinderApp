@@ -26,7 +26,6 @@ public class MyUtil {
     }
     
     public static String catchSQLException(String errorMsg){
-        System.out.println("ERROR CATCH: " + errorMsg);
         String[] parts = errorMsg.trim().split("'");
         if(parts[0].contains(DUPLICATE_ERROR_KEY)){
             String[] subParts = parts[3].split("_");

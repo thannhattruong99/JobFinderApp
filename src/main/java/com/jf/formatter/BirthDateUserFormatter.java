@@ -20,7 +20,6 @@ public class BirthDateUserFormatter implements Formatter<User> {
 
     @Override
     public String print(User t, Locale locale) {
-        System.out.println("Formater print");
         return String.valueOf(t.getBirthDate());
     }
 
@@ -30,10 +29,9 @@ public class BirthDateUserFormatter implements Formatter<User> {
         try {
   
         Date birthDate = new SimpleDateFormat("yyyy-MM-dd").parse(string);
-        System.out.println("Parsed date: " + birthDate);
         user.setBirthDate(birthDate);
         } catch (Exception e) {
-            System.out.println("LOI PARSE: " + e.getMessage());
+            System.out.println(e.getMessage());
         }
         return user;
     }
