@@ -97,7 +97,7 @@ public class RecruitmentNewsController {
         return errors;
     }
 
-    @GetMapping("create-recruitment")
+    @GetMapping("/create-recruitment")
     public String add(Model model) {
         model.addAttribute("rn", new RecruimentNews());
         model.addAttribute("cities", this.userDetailService.getCities());
@@ -106,7 +106,7 @@ public class RecruitmentNewsController {
         return "create-recruitment-news";
     }
 
-    @PostMapping("create-recruitment")
+    @PostMapping("/create-recruitment")
     public String add(Model model,
             @ModelAttribute(name = "rn") @Valid RecruimentNews rn,
             @RequestParam("username") String username,
@@ -126,7 +126,7 @@ public class RecruitmentNewsController {
         return "create-recruitment-news";
     }
 
-    @GetMapping("view-detail")
+    @GetMapping("/view-detail")
     public String viewDetail(Model model, @RequestParam(name = "rnId") String rnId) {
 
         model.addAttribute("rn", recruimentNewsService.getRecruimentNewsDetail(rnId));

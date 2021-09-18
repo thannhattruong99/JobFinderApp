@@ -29,7 +29,7 @@ public class CommentController {
     private UserService userDetailService;
     
     
-    @PostMapping("comment")
+    @PostMapping("/comment")
     public String sendComment(Model model, 
             @ModelAttribute(name = "comment") @Valid Comment comment,
             BindingResult result){
